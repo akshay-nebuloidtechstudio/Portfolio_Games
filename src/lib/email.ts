@@ -16,7 +16,10 @@ export async function sendAccountCredentials({
   fullName,
   username,
   password,
-}: SendAccountCredentialsParams): Promise<{ success: boolean; error?: string }> {
+}: SendAccountCredentialsParams): Promise<{
+  success: boolean;
+  error?: string;
+}> {
   if (!resend) {
     console.error("RESEND_API_KEY is not configured. Email not sent.");
     return {
@@ -59,7 +62,8 @@ export async function sendAccountCredentials({
 
   try {
     const { error } = await resend.emails.send({
-      from: process.env.EMAIL_FROM || "Nebuloid Games <noreply@nebuloidgames.com>",
+      from:
+        process.env.EMAIL_FROM || "Nebuloid Games <noreply@nebuloidgames.com>",
       to,
       subject: "Your Nebuloid Games Access",
       html,

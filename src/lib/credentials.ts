@@ -54,8 +54,9 @@ export function generatePassword(): string {
     PASSWORD_CHARS[62 + secureRandom(PASSWORD_CHARS.length - 62)],
   ];
 
-  const remaining = Array.from({ length: PASSWORD_LENGTH - required.length }, () =>
-    PASSWORD_CHARS[secureRandom(PASSWORD_CHARS.length)],
+  const remaining = Array.from(
+    { length: PASSWORD_LENGTH - required.length },
+    () => PASSWORD_CHARS[secureRandom(PASSWORD_CHARS.length)],
   );
 
   return shuffleArray([...required, ...remaining]).join("");

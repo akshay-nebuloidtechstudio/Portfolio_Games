@@ -9,10 +9,7 @@ export async function POST(request: Request) {
 
     if (!result.success) {
       const errors = result.error.flatten().fieldErrors;
-      return NextResponse.json(
-        { success: false, errors },
-        { status: 400 },
-      );
+      return NextResponse.json({ success: false, errors }, { status: 400 });
     }
 
     const { fullName, email } = result.data;
