@@ -5,7 +5,7 @@ const Navbar = () => {
   return (
     <header className="w-full bg-[#F4F0E7]">
       <nav
-        className="w-full max-w-[1728px] mx-auto h-[100px] bg-[#F4F0E7] border border-[#000000] flex items-center justify-between pt-[29px] pr-[42px] pb-[34px] pl-[42px] gap-[10px] shadow-[0px_4px_50.2px_-12px_rgba(0,0,0,0.25)] box-border"
+        className="w-full mx-auto bg-[#F4F0E7] border border-[#000000] flex items-center justify-between px-5 py-2 shadow-[0px_4px_50.2px_-12px_rgba(0,0,0,0.25)] box-border"
         style={{
           boxShadow: "0px 4px 50.2px -12px rgba(0, 0, 0, 0.25)",
         }}

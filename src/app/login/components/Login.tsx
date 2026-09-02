@@ -30,9 +30,9 @@ const Login = () => {
   };
 
   return (
-    <div className="w-full bg-[#F4F0E7] border-x border-b border-black max-w-[1728px] mx-auto flex flex-col box-border relative overflow-hidden">
+    <div className="w-full bg-[#F4F0E7] mx-auto flex flex-col box-border relative overflow-hidden">
       {/* Background Hero Section (Underlay) */}
-      <div className="relative min-h-[580px] lg:min-h-[640px] flex items-center justify-center">
+      <div className="relative flex items-center justify-center w-full">
         {/* Background Visual Structure */}
         <div className="absolute inset-0 grid grid-cols-1 lg:grid-cols-12 items-center pointer-events-none select-none opacity-80 lg:opacity-100">
           {/* Left Text */}
@@ -70,7 +70,7 @@ const Login = () => {
         </div>
 
         {/* Centered Glassmorphic Modal Card */}
-        <div className="relative z-20 my-8 sm:my-12 px-4 w-full flex justify-center">
+        <div className="relative z-20 my-10 py-12 px-4 w-full flex justify-center backdrop-blur-xs">
           <div className="relative w-full max-w-[490px] rounded-[28px] border border-black/30 shadow-[0px_10px_35px_-5px_rgba(0,0,0,0.18)] p-7 sm:p-9 overflow-hidden transition-all duration-300 isolate">
             {/* Backdrop Blur Background Layer (Only blurs what is behind the card) */}
             <div
@@ -137,7 +137,7 @@ const Login = () => {
                       </label>
 
                       <Link
-                        href="/forgot-password"
+                        href="/"
                         className="text-[#2563EB] hover:underline font-medium"
                       >
                         Forget Password?
@@ -251,6 +251,7 @@ const Login = () => {
                 </div>
               </form>
             </div>
+            
           </div>
         </div>
       </div>

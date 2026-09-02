@@ -2,9 +2,9 @@ import Link from "next/link";
 
 const Footer = () => {
   return (
-    <footer className="w-full bg-[#F4F0E7] border-x border-b border-black max-w-[1728px] mx-auto pt-5 pb-5 px-8 sm:px-12 md:px-16 lg:px-20 box-border">
+    <footer className="w-full bg-[#F4F0E7] mx-auto pt-5 pb-5 px-8">
       {/* Top Main Section */}
-      <div className="grid grid-cols-1 md:grid-cols-12 gap-10 lg:gap-12 pb-12">
+      <div className="flex justify-between mx-auto px-4 pt-7 pb-2 max-md:flex-col max-lg:flex-col gap-8 max-md:items-start">
         {/* Column 1: Brand & Description */}
         <div className="md:col-span-6 lg:col-span-5 flex flex-col justify-start">
           <h2 className="font-serif text-3xl sm:text-4xl lg:text-[42px] font-black uppercase tracking-tight text-black leading-none mb-1">
@@ -26,14 +26,14 @@ const Footer = () => {
         </div>
 
         {/* Column 2: Explore Links */}
-        <div className="md:col-span-3 lg:col-span-3 flex flex-col md:pl-4">
+        <div className="flex flex-col md:col-span-3 lg:col-span-3">
           <h4 className="font-serif text-xl sm:text-2xl font-bold text-black mb-5">
             Explore
           </h4>
           <ul className="flex flex-col space-y-3 text-sm sm:text-base text-[#333333]">
             <li>
               <Link
-                href="/games"
+                href="/our-games"
                 className="hover:text-black hover:underline underline-offset-4 transition-colors"
               >
                 Games &amp; Modules
@@ -41,7 +41,7 @@ const Footer = () => {
             </li>
             <li>
               <Link
-                href="/pricing"
+                href="/"
                 className="hover:text-black hover:underline underline-offset-4 transition-colors"
               >
                 Pricing Plans
@@ -49,7 +49,7 @@ const Footer = () => {
             </li>
             <li>
               <Link
-                href="/licenses"
+                href="/"
                 className="hover:text-black hover:underline underline-offset-4 transition-colors"
               >
                 School Licenses
@@ -57,7 +57,7 @@ const Footer = () => {
             </li>
             <li>
               <Link
-                href="/stories"
+                href="/"
                 className="hover:text-black hover:underline underline-offset-4 transition-colors"
               >
                 Success Stories

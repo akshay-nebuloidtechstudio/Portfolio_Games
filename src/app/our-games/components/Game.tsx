@@ -128,23 +128,21 @@ const initialGamesList: GameItem[] = [
   },
 ];
 
-
-
 const Game = () => {
   // Single state to manage all games (easy to update via admin API fetch or props)
   const [games, setGames] = useState<GameItem[]>(initialGamesList);
 
   return (
-    <section className="w-full bg-[#F4F0E7] border-x border-b border-black max-w-[1728px] mx-auto py-14 sm:py-16 px-6 sm:px-10 md:px-14 lg:px-16 box-border">
+    <section className="w-full bg-[#F4F0E7] mx-auto py-12 px-6">
       {/* Top Header Section */}
-      <div className="text-center max-w-2xl mx-auto mb-12 sm:mb-16">
-        <p className="font-serif text-lg sm:text-xl text-black font-medium tracking-tight mb-1">
+      <div className="text-center max-w-2xl mx-auto mb-12">
+        <p className="font-serif text-lg text-black font-medium tracking-tight mb-1">
           Choose Your Game
         </p>
-        <h1 className="font-serif text-4xl sm:text-5xl lg:text-[54px] font-black text-black tracking-tight leading-tight mb-3.5">
+        <h1 className="font-serif text-4xl font-black text-black tracking-tight leading-tight mb-3.5">
           Our Games
         </h1>
-        <p className="text-[#4A4A4A] text-sm sm:text-[15px] leading-relaxed">
+        <p className="text-[#4A4A4A] text-sm leading-relaxed">
           Each game is uniquely crafted to test your logic, speed, memory and strategy.
         </p>
       </div>
@@ -210,7 +208,7 @@ const Game = () => {
 
                 <button
                   type="button"
-                  className="px-4 py-1.5 bg-[#FEF6E4] hover:bg-[#FAEDD0] text-[#000000] border border-[#E6DCC3] rounded-[10px] font-serif text-[11px] sm:text-[12px] font-bold tracking-[0.08em] uppercase transition-all duration-200 hover:shadow-sm active:scale-95 cursor-pointer"
+                  className="px-4 py-1.5 bg-[#FEF6E4] hover:bg-[#FAEDD0] text-[#000000] border border-[#E6DCC3] rounded-[10px] font-serif text-[11px] font-bold tracking-[0.08em] uppercase transition-all duration-200 hover:shadow-sm active:scale-95 cursor-pointer"
                 >
                   {item.getAccess ? "PLAY NOW" : "GET ACCESS"}
                 </button>

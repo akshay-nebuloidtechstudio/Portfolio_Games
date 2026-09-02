@@ -3,7 +3,7 @@ import Link from "next/link";
 
 const Hero = () => {
   return (
-    <section className="w-full bg-[#F4F0E7] border-x border-b border-black max-w-[1728px] mx-auto flex flex-col box-border">
+    <section className="w-full bg-[#F4F0E7] border-x border-b border-black mx-auto flex flex-col">
       {/* Main Hero Content */}
       <div className="grid grid-cols-1 lg:grid-cols-12 min-h-[560px] lg:min-h-[620px] items-center relative overflow-hidden">
         {/* Left Column: Text Content */}
