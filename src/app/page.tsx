@@ -3,9 +3,8 @@ import Games from "./our-games/components/Game";
 
 export default function Home() {
   return (
-    <main className="w-full bg-[#F4F0E7] min-h-screen">
+    <main className="w-full bg-[#F4F0E7] overflow-hidden">
       <Hero />
-      <Games />
     </main>
   );
 }

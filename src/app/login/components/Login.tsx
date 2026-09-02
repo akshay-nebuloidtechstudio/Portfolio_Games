@@ -88,6 +88,12 @@ const Login = () => {
                 {isSignUp ? "Sign up" : "Log in"}
               </h2>
 
+              <div className="absolute top-0 right-0 bg-amber-400 w-8 h-8 text-center flex justify-center items-center font-bold text-white rounded-full">
+                <Link href="/">
+                  ✕
+                </Link>
+              </div>
+
               {/* Form */}
               <form onSubmit={handleSubmit} className="flex flex-col space-y-4">
                 {!isSignUp ? (
