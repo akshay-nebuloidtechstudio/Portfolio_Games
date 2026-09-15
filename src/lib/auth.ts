@@ -54,6 +54,7 @@ export async function getCurrentUser() {
           fullName: true,
           email: true,
           username: true,
+          role: true,
           status: true,
           createdAt: true,
           updatedAt: true,
@@ -92,6 +93,17 @@ export async function requireAuth() {
   return user;
 }
 
+export async function requireAdmin() {
+  const user = await getCurrentUser();
+  if (!user) {
+    throw new Error("Unauthorized");
+  }
+  if (user.role !== "ADMIN") {
+    throw new Error("Forbidden");
+  }
+  return user;
+}
+
 export async function destroySession(): Promise<void> {
   const store = await cookies();
   const token = store.get(SESSION_COOKIE_NAME)?.value;
@@ -102,4 +114,8 @@ export async function destroySession(): Promise<void> {
   }
 
   store.delete(SESSION_COOKIE_NAME);
+}
+
+export async function destroyUserSessions(userId: string): Promise<void> {
+  await prisma.session.deleteMany({ where: { userId } });
 }

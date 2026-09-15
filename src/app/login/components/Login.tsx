@@ -2,19 +2,23 @@
 
 import Image from "next/image";
 import Link from "next/link";
+import { useRouter } from "next/navigation";
 import { useState } from "react";
 
 const Login = () => {
+  const router = useRouter();
   const [isSignUp, setIsSignUp] = useState(false);
   const [formData, setFormData] = useState({
     username: "",
     name: "",
     email: "",
-    phone: "",
     password: "",
     rememberMe: false,
     agreeTerms: false,
   });
+  const [error, setError] = useState<string | null>(null);
+  const [success, setSuccess] = useState<string | null>(null);
+  const [loading, setLoading] = useState(false);
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value, type, checked } = e.target;
@@ -22,17 +26,90 @@ const Login = () => {
       ...prev,
       [name]: type === "checkbox" ? checked : value,
     }));
+    setError(null);
+    setSuccess(null);
   };
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleLogin = async (e: React.FormEvent) => {
     e.preventDefault();
-    // Handle authentication logic
+    setError(null);
+    setSuccess(null);
+    setLoading(true);
+
+    try {
+      const res = await fetch("/api/auth/login", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          username: formData.username,
+          password: formData.password,
+        }),
+      });
+
+      const data = await res.json();
+
+      if (!data.success) {
+        setError(data.message || "Invalid username or password.");
+        return;
+      }
+
+      router.push(data.user?.role === "ADMIN" ? "/admin/dashboard" : "/");
+      router.refresh();
+    } catch {
+      setError("An error occurred. Please try again.");
+    } finally {
+      setLoading(false);
+    }
   };
+
+  const handleRequestAccess = async (e: React.FormEvent) => {
+    e.preventDefault();
+    setError(null);
+    setSuccess(null);
+    setLoading(true);
+
+    try {
+      const res = await fetch("/api/auth/request-access", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          fullName: formData.name,
+          email: formData.email,
+        }),
+      });
+
+      const data = await res.json();
+
+      if (!data.success) {
+        const messages = data.errors
+          ? Object.values(data.errors).flat().join(", ")
+          : data.message || "Failed to submit request.";
+        setError(messages);
+        return;
+      }
+
+      setSuccess(
+        "Access request submitted! You will receive your login credentials via email once approved.",
+      );
+      setFormData((prev) => ({
+        ...prev,
+        name: "",
+        email: "",
+        agreeTerms: false,
+      }));
+    } catch {
+      setError("An error occurred. Please try again.");
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const handleSubmit = isSignUp ? handleRequestAccess : handleLogin;
 
   return (
-    <div className="w-full bg-[#F4F0E7] mx-auto flex flex-col box-border relative overflow-hidden">
+    <div className="w-full bg-[#F4F0E7] mx-auto flex flex-col flex-1 box-border relative overflow-hidden">
       {/* Background Hero Section (Underlay) */}
-      <div className="relative flex items-center justify-center w-full">
+      <div className="relative flex flex-1 items-center justify-center w-full">
         {/* Background Visual Structure */}
         <div className="absolute inset-0 grid grid-cols-1 lg:grid-cols-12 items-center pointer-events-none select-none opacity-80 lg:opacity-100">
           {/* Left Text */}
@@ -96,6 +173,18 @@ const Login = () => {
 
               {/* Form */}
               <form onSubmit={handleSubmit} className="flex flex-col space-y-4">
+                {/* Error/Success Messages */}
+                {error && (
+                  <div className="rounded-[14px] border border-red-300 bg-red-50 px-4 py-3 text-sm text-red-700">
+                    {error}
+                  </div>
+                )}
+                {success && (
+                  <div className="rounded-[14px] border border-green-300 bg-green-50 px-4 py-3 text-sm text-green-700">
+                    {success}
+                  </div>
+                )}
+
                 {!isSignUp ? (
                   /* Login Fields */
                   <>
@@ -122,7 +211,6 @@ const Login = () => {
                         className="w-full h-[50px] px-5 bg-white/20 border border-black/40 rounded-[14px] text-black placeholder:text-[#666666] text-[15px] outline-none focus:border-black focus:ring-1 focus:ring-black/20 transition-all"
                       />
                     </div>
-
                     {/* Options row */}
                     <div className="flex items-center justify-between text-xs sm:text-[13px] text-[#222222] px-1 pt-0.5">
                       <label className="flex items-center gap-2 cursor-pointer select-none">
@@ -145,7 +233,7 @@ const Login = () => {
                     </div>
                   </>
                 ) : (
-                  /* Sign Up Fields */
+                  /* Sign Up / Request Access Fields */
                   <>
                     <div>
                       <input
@@ -153,7 +241,7 @@ const Login = () => {
                         name="name"
                         value={formData.name}
                         onChange={handleChange}
-                        placeholder="Name"
+                        placeholder="Full Name"
                         required
                         className="w-full h-[50px] px-5 bg-white/20 border border-black/40 rounded-[14px] text-black placeholder:text-[#666666] text-[15px] outline-none focus:border-black focus:ring-1 focus:ring-black/20 transition-all"
                       />
@@ -165,19 +253,7 @@ const Login = () => {
                         name="email"
                         value={formData.email}
                         onChange={handleChange}
-                        placeholder="E- mail"
-                        required
-                        className="w-full h-[50px] px-5 bg-white/20 border border-black/40 rounded-[14px] text-black placeholder:text-[#666666] text-[15px] outline-none focus:border-black focus:ring-1 focus:ring-black/20 transition-all"
-                      />
-                    </div>
-
-                    <div>
-                      <input
-                        type="tel"
-                        name="phone"
-                        value={formData.phone}
-                        onChange={handleChange}
-                        placeholder="Phone Number"
+                        placeholder="E-mail"
                         required
                         className="w-full h-[50px] px-5 bg-white/20 border border-black/40 rounded-[14px] text-black placeholder:text-[#666666] text-[15px] outline-none focus:border-black focus:ring-1 focus:ring-black/20 transition-all"
                       />
@@ -215,9 +291,14 @@ const Login = () => {
                 <div className="flex justify-center pt-2">
                   <button
                     type="submit"
-                    className="px-9 py-2.5 min-w-[130px] h-[44px] flex items-center justify-center bg-[#FEF6E4] hover:bg-[#FAEDD0] text-[#000000] border border-[#E6DCC3] rounded-[14px] font-serif text-[16px] font-bold tracking-[0.08em] uppercase transition-all duration-200 hover:shadow-sm active:scale-95 cursor-pointer select-none"
+                    disabled={loading}
+                    className="px-9 py-2.5 min-w-[130px] h-[44px] flex items-center justify-center bg-[#FEF6E4] hover:bg-[#FAEDD0] text-[#000000] border border-[#E6DCC3] rounded-[14px] font-serif text-[16px] font-bold tracking-[0.08em] uppercase transition-all duration-200 hover:shadow-sm active:scale-95 cursor-pointer select-none disabled:opacity-50 disabled:cursor-not-allowed"
                   >
-                    {isSignUp ? "SIGN UP" : "LOGIN"}
+                    {loading
+                      ? "Please wait..."
+                      : isSignUp
+                        ? "REQUEST ACCESS"
+                        : "LOGIN"}
                   </button>
                 </div>
 
@@ -229,10 +310,14 @@ const Login = () => {
                         Don&apos;t Have An Account?{" "}
                         <button
                           type="button"
-                          onClick={() => setIsSignUp(true)}
+                          onClick={() => {
+                            setIsSignUp(true);
+                            setError(null);
+                            setSuccess(null);
+                          }}
                           className="font-bold text-black hover:underline cursor-pointer ml-1"
                         >
-                          Sign UP
+                          Request Access
                         </button>
                       </>
                     ) : (
@@ -240,7 +325,11 @@ const Login = () => {
                         Already Have An Account?{" "}
                         <button
                           type="button"
-                          onClick={() => setIsSignUp(false)}
+                          onClick={() => {
+                            setIsSignUp(false);
+                            setError(null);
+                            setSuccess(null);
+                          }}
                           className="font-bold text-black hover:underline cursor-pointer ml-1"
                         >
                           Login
@@ -257,7 +346,7 @@ const Login = () => {
       </div>
 
       {/* Bottom Feature Strip */}
-      <div className="w-full border-t border-black grid grid-cols-3 bg-[#F4F0E7]">
+      <div className="w-full border-t border-black grid grid-cols-3 bg-[#F4F0E7] shrink-0">
         {/* Item 1 */}
         <div className="flex items-center justify-center px-6 py-5 border-r border-black">
           <span className="font-serif text-xl sm:text-2xl lg:text-[26px] xl:text-[28px] font-bold text-black uppercase tracking-tight text-center">
